@@ -4,7 +4,7 @@ FROM python:${PYTHON_VERSION} as builder
 
 # Set the working directory
 WORKDIR /app
-COPY . .
+COPY . ./
 
 # Stage 2: Run Stage
 FROM python:${PYTHON_VERSION} as run
@@ -15,9 +15,8 @@ ENV PYTHONUNBUFFERED=1
 
 COPY --from=builder /app .
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
-
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 RUN python manage.py migrate
 
 # Run database migrations and start the Django application
